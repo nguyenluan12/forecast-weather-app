@@ -27,12 +27,31 @@
 .App-link {
   color: #61dafb;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.forecastDay {
+  border: 2px solid transparent;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 5px;
+  max-height: 50%;
+  scale: 0.8;
+  cursor: pointer;
+  
+  
+}
+.forecastDay:hover {
+  border: 2px solid rgb(104, 198, 239);
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+  background-color: rgb(253, 242, 229);
+    
+}
+.forecast-hour-item{
+  scale:0.8;
+  border: 1px solid ;
+  gap:0;
+  padding: 0;
+  
+}
+.weather-forecast {
+  transition: all 3s ease;
 }

@@ -11,3 +11,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.forecastDay:hover {
+  border: 1px solid rgb(138, 198, 244);
+}
