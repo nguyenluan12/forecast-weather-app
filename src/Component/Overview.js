@@ -32,6 +32,7 @@ function Overview(props) {
         const now = new Date();
         const hours = now.getHours();
         const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
         const day = days[now.getDay()];
         const month = Months[now.getMonth()];
         const year = now.getFullYear();
@@ -48,16 +49,19 @@ function Overview(props) {
             setRealTime(()=>handleRealTime());
             console.log("time loop")
             }, 1000);
-    });
+    },);
     
     
     
     return (
         <div style={{
-            
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
             width: '100%',
             height: '400px',
-            border: "2px solid purple"
+           
             }}>
             
             <div>{realTime}</div>
@@ -67,7 +71,7 @@ function Overview(props) {
                     flexDirection: "row",
                     justifyContent: "center",
                     alignItems:"Center",
-                    border:"2px solid red",
+                    
                     maxWidth: "100%",
                     gap:"15px"
                 }
@@ -85,7 +89,7 @@ function Overview(props) {
                     display: "flex",
                     flexDirection: "row",
                     justifyContent:"center",
-                    border: "2px solid",
+                   
                     gap:"15px"
                 }
             }>

@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  box-shadow: 4px 4px rgb(197, 216, 223);
+  padding-top: 30px;
 }
 
 .App-logo {
@@ -28,27 +30,37 @@
   color: #61dafb;
 }
 .forecastDay {
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   padding: 20px;
   border-radius: 5px;
   margin: 5px;
   max-height: 50%;
   scale: 0.8;
   cursor: pointer;
-  
-  
+  width: 30%;
+}
+.title-chart {
+  cursor: pointer;
+  position: absolute;
+  top:-40px;
+  left: 30px;
+}
+.adfdf{
+  color: #000000;
 }
 .forecastDay:hover {
-  border: 2px solid rgb(104, 198, 239);
+  
+  border: 1px solid rgb(177, 194, 201);
   transform: scale(1.05);
   transition: all 0.2s ease;
-  background-color: rgb(253, 242, 229);
+  background-color: rgb(243, 251, 252);
+  box-shadow: 3px 3px #c6e5ec;
     
 }
 .forecast-hour-item{
   scale:0.8;
-  border: 1px solid ;
-  gap:0;
+  /* border: 1px solid ; */
+  gap:-30px;
   padding: 0;
   
 }
