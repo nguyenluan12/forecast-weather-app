@@ -12,13 +12,13 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isExistCity, setExistCity] = useState(true);
 
-  // Hàm gọi API để lấy dữ liệu thời tiết
+  
   async function handleFetchData(city) {
     setIsLoading(true); 
     try {
-        const response = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=${process.env.REACT_APP_WEATHER_API_KEY}&q=${city}&days=10&aqi=no&alerts=yes`);
+        const response = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=f5ac4be4a19c47d8a3e42522222112&q=${city}&days=10&aqi=no&alerts=yes`);
         const res = response.data;
-        setData(res); // Cập nhật dữ liệu
+        setData(res); 
         setIsLoading(false); // Dữ liệu đã tải xong
         setExistCity(true);
     } catch (error) {
@@ -35,7 +35,7 @@ function App() {
   useEffect(() => {
     handleFetchData(city);
   }, [city]);
-
+  
   // Hàm xử lý sự kiện khi nhấn Enter trong input
   function handleChangeInput(e) {
     if (e.key === 'Enter') {

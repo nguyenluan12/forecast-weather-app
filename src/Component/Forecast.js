@@ -124,8 +124,7 @@ function Forecast(props) {
 
     function ForecastHourItem(props) {
         const hour = props.hour;
-        console.log('hour', hour);
-
+      
         const [changeDisplay, setChangeDisplay] = useState('none');
         const [infoHour, infoHourDispatch] = useReducer(changeHour, {});
 

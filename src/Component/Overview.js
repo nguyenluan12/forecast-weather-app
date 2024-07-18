@@ -2,7 +2,7 @@ import React, { useState,useEffect } from "react";
 
 
 function Overview(props) {
-    // console.log(data);
+    
     const current = props.data.current;
     // Xử lý hiển thị thời gian thực .
     const days =[
@@ -47,7 +47,6 @@ function Overview(props) {
     useEffect(() => {
         setTimeout(() => {
             setRealTime(()=>handleRealTime());
-            console.log("time loop")
             }, 1000);
     },);
     
