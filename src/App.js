@@ -26,7 +26,7 @@ function App() {
         console.log(error);
         setExistCity(false);
         setIsLoading(false);
-        alert("Sai thành phố");
+        alert("Nhập sai thành phố !");
       });
   }
 
