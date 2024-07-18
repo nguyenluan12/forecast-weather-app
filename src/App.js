@@ -13,22 +13,23 @@ function App() {
   const [isExistCity, setExistCity] = useState(true);
 
   // Hàm gọi API để lấy dữ liệu thời tiết
-  function handleFetchData(city) {
+  async function handleFetchData(city) {
     setIsLoading(true); 
-    axios.get(`http://api.weatherapi.com/v1/forecast.json?key=${process.env.REACT_APP_WEATHER_API_KEY}&q=${city}&days=10&aqi=no&alerts=yes`)
-      .then(res => res.data)
-      .then((res) => {
+    try {
+        const response = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=${process.env.REACT_APP_WEATHER_API_KEY}&q=${city}&days=10&aqi=no&alerts=yes`);
+        const res = response.data;
         setData(res); // Cập nhật dữ liệu
         setIsLoading(false); // Dữ liệu đã tải xong
         setExistCity(true);
-      })
-      .catch(error => {
+    } catch (error) {
         console.log(error);
         setExistCity(false);
         setIsLoading(false);
         alert("Nhập sai thành phố !");
-      });
-  }
+        setCity('hanoi');
+    }
+}
+
 
   // Cập nhật dữ liệu khi thành phố thay đổi
   useEffect(() => {
