@@ -1,52 +1,21 @@
 // import { hover } from "@testing-library/user-event/dist/hover";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 import '..';
 // import MyChart from "./MyChart";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+// import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
 
 function Forecast(props) {
     const [forecastday, setForecastDay] = useState(props.data);
-    
     const [idxDay, setIdxDay] = useState(0);
     const [hour, setHour] = useState(forecastday[0].hour);
     const [maxtemp_c,setMaxtemp_c] = useState(hour[0].maxtemp_c);
     const [date, setDate] = useState(forecastday[0].date)
     const [detailHour, setDetailHour] = useState(hour[0])
     const [changeDisplay, setChangeDisplay] = useState('none')
-    console.log(maxtemp_c)
-    console.log('detail')
-    console.log(typeof(hour))
-    //bang chi tiet theo gio
-    function handleChangeDisplayNone() {
-        setChangeDisplay('none')
-    }
-    function DetailWeather() {
-        return (
-            <div className="detail-hour-block" style={{
-                display: changeDisplay,
-
-            }}>
-                <div>
-                    <h1>{date}</h1>
-                    <h1 onClick={()=>handleChangeDisplayNone()}>X</h1>
-                </div>
-                <div>
-                    <p>time</p>
-                    <p>Max Temperature: {maxtemp_c}</p>
-                    <p> Sun Rise: </p>
-                    <p> Moon Rise: </p>
-                    <p> Moon Phase: </p>
-                    <p> Humidity: </p>
-                    <p> Chance Of Snow: </p>
-                    <p> Min Temperature: </p>
-                    <p>  </p>
-                    <p>  </p>
-                </div>
-            </div>
-        )
-    }
+   
 
     //Tao bang phan tich 
     function MyChart() {
@@ -92,64 +61,159 @@ function Forecast(props) {
             <div style={
                 {
                     width: "100%",
-                    height: "100px",
+                    height: "150px",
                     marginTop: "0px",
                     paddingBottom: "30px",
                     position:"relative"
                     
                 
                 }
-        }>
-                {nameChart == "temp" ? <h1 className="title-chart" onClick={()=> handleUV()}>Temperature</h1> : nameChart=="uv"?<h1 className="title-chart" onClick={()=> handleHumid()}>UV</h1>:<h1 className="title-chart" onClick={()=> handleTemp()}>Humidity</h1>}
-                
-                {/* <h1 onClick={()=>handleUV()}>UV</h1>
-                <h1 onClick={() => handleHumid()}>Humid</h1> */}
-                <ResponsiveContainer style={
-                    {
-                        width: "100%",
-                        height: "100%",
-                        
-                        position: "absolute",
-                        right: "25px",
-                        top:"20px"
-                    }
                 }>
-                    <AreaChart
+                
+        <ResponsiveContainer width="100%" height="100%">
                     
-                    width={700}
-                    height={400}
-                    data={data}
-                    margin={{
-                    top: 0,
-                    right: 0,
-                    left: 0,
-                    bottom: 0,
-                    }}
-                >
-                    {/* <CartesianGrid fontSize={10} strokeDasharray="0" /> */}
-                    <XAxis style={{display:"none"}} fontSize={10} dataKey="name" />
-                    <YAxis style={{display:"none"}} fontSize={10} /> 
-                     <Tooltip fontSize={10} />
-                    <Area type="monotone" dataKey={nameChart} stroke={colorChart} fill={colorChart} />
-                </AreaChart>
-                </ResponsiveContainer>
+            <LineChart
+            width={500}
+            height={300}
+            data={data}
+            margin={{
+                top: 0,
+                right: 0,
+                left: 0,
+                bottom: 0,
+            }}
+            >
+            {/* <CartesianGrid strokeDasharray="3 3" /> */}
+            {/* <XAxis dataKey="name" />
+            <YAxis /> */}
+                            
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="humid" stroke="#8884d8" activeDot={{ r: 8 }} />
+                            <Line type="monotone" dataKey="temp" stroke="#82ca9d" />
+                            <Line type="monotone" dataKey="uv" stroke="#282828" />
+            </LineChart>
+      </ResponsiveContainer>
             </div>
     );
     };
 
     // Phan tich theo gio
+   
+
+    const changeHour = (state, action) => {
+        switch (action.type) {
+            case 'CHANGE_HOUR':
+                const { index, hour } = action.payload;
+                return {
+                    hour : (index<10? `0${index}:00`: `${index}:00`),
+                    icon: hour[index].condition.icon,
+                    text: hour[index].condition.text,
+                    temp_c: hour[index].temp_c,
+                    feelslike: hour[index].feelslike_c,
+                    temp_f: hour[index].temp_f,
+                    humid: hour[index].humidity,
+                    uv: hour[index].uv,
+                    wind: hour[index].wind_kph,
+                    snow: hour[index].snow_cm,
+                };
+            default:
+                return state;
+        }
+    };
+
     function ForecastHourItem(props) {
         const hour = props.hour;
-        console.log('hour')
-        console.log(hour)
-        return (
-            hour.map((item,index)=>(
-                <div className="forecast-hour-item" key={index} >
-                    <p style={{marginBottom:"0",marginTop:"0" }}>{item.dewpoint_f}°F</p>
-                    <img style={{marginBottom:"0",marginTop:"0" }} src={item.condition.icon} />
-                    { index< 10 ? <p style={{marginBottom:"0",marginTop:"0"  }}>0{index}:00</p> : <p style={{ marginBottom:"0",marginTop:"0"   }}>{index}:00</p>}
+        console.log('hour', hour);
+
+        const [changeDisplay, setChangeDisplay] = useState('none');
+        const [infoHour, infoHourDispatch] = useReducer(changeHour, {});
+
+        function handleChangeDisplay(index) {
+            setChangeDisplay('flex');
+            infoHourDispatch({ type: 'CHANGE_HOUR', payload: { index, hour } });
+        }
+
+        function handleChangeDisplayNone() {
+            setChangeDisplay('none');
+        }
+
+        function DetailWeather() {
+            return (
+                <div className="detail-hour-block" style={{ display: changeDisplay }}>
+                    <div style={{
+                        backgroundColor: '#96C9F4',
+                        width: "100%",
+                        height:'70px',
+                        textAlign: 'left',
+                        color: 'black',
+                        // border: '1px solid white',
+                        
+                        
+                    }}>
+                        <h1>Weather Details</h1>
+                        <div style={{
+                            position: 'absolute',
+                            right: '10px',
+                            top: '-30px',
+                            cursor: 'pointer',
+                            
+                            // width: '40px',
+                            // height: '40px',
+                            marginTop:'30px',
+                            paddingBottom: '5px',
+                            textAlign:'center'
+                            
+                        }} onClick={handleChangeDisplayNone}><img src='./img/reject.png'></img></div>
+                    </div>
+                    <div>
+                        <div className="detail-hour-item">
+                            <p>Time: {infoHour.hour}</p>
+                            <div style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap:'15px'
+                            }}>
+                                <img src={infoHour.icon} alt="weather icon" />
+                                <h1>{infoHour.text}</h1>
+                            </div>
+                        </div>
+                        
+                        <div className="detail-hour-item">
+                            <p>Temperature: {infoHour.temp_c}°C</p>
+                            <p>Feels Like: {infoHour.feelslike}°C</p>
+                            <p>Humidity: {infoHour.humid}%</p>
+                            <p>UV: {infoHour.uv}</p>
+                        
+                        <p>Wind Speed: {infoHour.wind} kph</p>
+                            <p>Snow: {infoHour.snow}%</p>
+                            </div>
+                    </div>
                 </div>
-        )));
+            );
+        }
+
+        return (
+            <div >
+                <div style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    overflow: "scroll",
+                    msOverflowStyle: "none",
+                    scrollbarWidth: "none"
+
+                }}>
+                    {hour.map((item, index) => (
+                        <div className="forecast-hour-item" key={index} onDoubleClick={() => handleChangeDisplay(index)}>
+                            <p style={{ marginBottom: "0", marginTop: "0" }}>{item.dewpoint_f}°F</p>
+                            <img style={{ marginBottom: "0", marginTop: "0" }} src={item.condition.icon} alt="weather icon" />
+                            {index < 10 ? <p style={{ marginBottom: "0", marginTop: "0" }}>0{index}:00</p> : <p style={{ marginBottom: "0", marginTop: "0" }}>{index}:00</p>}
+                        </div>
+                    ))}
+                </div>
+                <DetailWeather />
+            </div>
+        );
     }
     
     function handleChangeForecastHour(index) {
@@ -193,7 +257,8 @@ function Forecast(props) {
             
             <MyChart weather={forecastday} idxDay={idxDay}/>
             <div style={
-                {
+                {   
+                    position:"relative",
                     display: "flex",
                     flexDirection: "row",
                     overflow: "scroll",
@@ -223,7 +288,7 @@ function Forecast(props) {
                 <ForcastDay forecastday={forecastday} />
                
             </div>
-             <DetailWeather />
+             
         </div>
         
         

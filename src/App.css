@@ -2,6 +2,7 @@
   text-align: center;
   box-shadow: 4px 4px rgb(197, 216, 223);
   padding-top: 30px;
+  position: relative;
 }
 
 .App-logo {
@@ -62,8 +63,31 @@
   /* border: 1px solid ; */
   gap:-30px;
   padding: 0;
+  cursor: pointer;
   
 }
 .weather-forecast {
   transition: all 3s ease;
+}
+.detail-hour-block{
+  position: fixed;
+  top: 150px;
+  left: 200px;
+  width: 400px;
+  border: 2px solid rgb(215, 234, 245);
+  border-radius: 5px;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; 
+  z-index: 100;
+  color: #403e3e;
+  
+  font-weight: 600;
+  transition: all 0.3s ease; 
+  opacity: 5;
+}
+.detail-hour-item {
+  text-align: left;
 }

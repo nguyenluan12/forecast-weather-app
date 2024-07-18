@@ -80,7 +80,7 @@ function Overview(props) {
                     width: '50px',
                 }}
                     src={current.condition.icon} />
-                <div>{current.temp_f}°F</div>
+                <div>{current.temp_c}°C</div>
              
             </div>
             <h1>{current.condition.text}</h1>
